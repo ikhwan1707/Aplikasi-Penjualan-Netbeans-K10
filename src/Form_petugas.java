@@ -378,8 +378,8 @@ private void kosong(){
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        String IDPetugas = idpetugas.getText();
-        String NamaPetugas = namapetugas.getText();
+        String ID = idpetugas.getText();
+        String Nama = namapetugas.getText();
         String Alamat = alamat.getText();
         String Email = email.getText();
         String Telpon = telpon.getText();
@@ -395,8 +395,8 @@ private void kosong(){
                 Connection c = Koneksi.getKoneksi();
                 String sql = "INSERT INTO tblpetugas VALUES (?,?,?,?,?)";
                 PreparedStatement p = c.prepareStatement(sql);
-                p.setString(1, IDPetugas);
-                p.setString(2, NamaPetugas);
+                p.setString(1, ID);
+                p.setString(2, Nama);
                 p.setString(3, Alamat);
                 p.setString(4, Email);
                 p.setString(5, Telpon);
@@ -466,7 +466,7 @@ private void kosong(){
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+        /* Set the Nimbus look and feel *
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
