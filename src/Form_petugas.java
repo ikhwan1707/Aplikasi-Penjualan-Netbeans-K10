@@ -358,15 +358,15 @@ private void kosong(){
             // tak ada baris terseleksi
             return;
         }
-        String ID = tabel.getValueAt(baris, 0).toString();
-        idpetugas.setText(ID);
-        String Nama = tabel.getValueAt(baris, 1).toString();
-        namapetugas.setText(Nama);
-        String Alamat = tabel.getValueAt(baris, 2).toString();
+        String IDPetugas = tabel.getValueAt(baris, 1).toString();
+        idpetugas.setText(IDPetugas);
+        String NamaPetugas = tabel.getValueAt(baris, 2).toString();
+        namapetugas.setText(NamaPetugas);
+        String Alamat = tabel.getValueAt(baris, 3).toString();
         alamat.setText(Alamat);
-        String Email = tabel.getValueAt(baris, 3).toString();
+        String Email = tabel.getValueAt(baris, 4).toString();
         email.setText(Email);
-        String Telpon = tabel.getValueAt(baris, 4).toString();
+        String Telpon = tabel.getValueAt(baris, 5).toString();
         telpon.setText(Telpon);
     }//GEN-LAST:event_tabelAncestorAdded
 
@@ -378,8 +378,8 @@ private void kosong(){
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        String ID = idpetugas.getText();
-        String Nama = namapetugas.getText();
+        String IDPetugas = idpetugas.getText();
+        String NamaPetugas = namapetugas.getText();
         String Alamat = alamat.getText();
         String Email = email.getText();
         String Telpon = telpon.getText();
@@ -395,8 +395,8 @@ private void kosong(){
                 Connection c = Koneksi.getKoneksi();
                 String sql = "INSERT INTO tblpetugas VALUES (?,?,?,?,?)";
                 PreparedStatement p = c.prepareStatement(sql);
-                p.setString(1, ID);
-                p.setString(2, Nama);
+                p.setString(1, IDPetugas);
+                p.setString(2, NamaPetugas);
                 p.setString(3, Alamat);
                 p.setString(4, Email);
                 p.setString(5, Telpon);
