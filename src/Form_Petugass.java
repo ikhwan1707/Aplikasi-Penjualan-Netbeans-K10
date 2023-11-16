@@ -180,6 +180,11 @@ public class Form_Petugass extends javax.swing.JFrame {
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(table);
 
         add.setText("Add New");
@@ -390,21 +395,20 @@ private void kosong(){
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         // TODO add your handling code here:
         String IDPetugas = id.getText();
-        String NamaPetugas= nama.getText();
+        String NamaPetugas = nama.getText();
         String Alamat = alamat.getText();
         String Email = email.getText();
         String Telpon = telpon.getText();
 
-        if ("".equals(id) || "".equals(nama) ||
-            "".equals(alamat) || "".equals(email)|| "".equals(telpon))
-        {
+        if ("".equals(IDPetugas) || "".equals(NamaPetugas)
+                || "".equals(Alamat) || "".equals(Email) || "".equals(Telpon)) {
             JOptionPane.showMessageDialog(this,
-                "Harap Lengkapi Data",
-                "Eror", JOptionPane.WARNING_MESSAGE);
+                    "Harap Lengkapi Data",
+                    "Error", JOptionPane.WARNING_MESSAGE);
         } else {
-            try{
+            try {
                 Connection c = Koneksi.getKoneksi();
-                String sql = "INSERT INTO tblpetugas VALUES (?,?,?,?,?,)";
+                String sql = "INSERT INTO tblpetugas VALUES (?,?,?,?,?)"; // Remove the extra comma here
                 PreparedStatement p = c.prepareStatement(sql);
 
                 p.setString(1, IDPetugas);
@@ -417,16 +421,17 @@ private void kosong(){
                 p.close();
 
                 JOptionPane.showMessageDialog(null,
-                    "Penyimpanan Data Berhasil");
+                        "Penyimpanan Data Berhasil");
 
-            }catch(SQLException e) {
+            } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this,
-                    e.getMessage());
-            }finally{
+                        e.getMessage());
+            } finally {
                 loadData();
                 kosong();
             }
-        }
+}
+
     }//GEN-LAST:event_SaveActionPerformed
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
@@ -450,15 +455,14 @@ private void kosong(){
         try{
             Connection c = Koneksi.getKoneksi();
 
-            String sql = "UPDATE tblpetugas SET NAMA = ?, ALAMAT = ?, EMAIL = ?, TELPON = ? WHERE ID = ?";
+            String sql = "UPDATE tblpetugas SET namapetugas = ?, alamat = ?, email = ?, telpon = ? WHERE idpetugas = ?";
 
             PreparedStatement p = c.prepareStatement(sql);
-            p.setString(1, IDPetugas);
-            p.setString(2, NamaPetugas);
-            p.setString(3, Alamat);
-            p.setString(4, Email);
-            p.setString(5, Telpon);
-
+            p.setString(1, NamaPetugas);
+            p.setString(2, Alamat);
+            p.setString(3, Email);
+            p.setString(4, Telpon);
+            p.setString(5, IDPetugas);
             p.executeUpdate();
             p.close();
 
@@ -502,7 +506,7 @@ private void kosong(){
         
         try{
             Connection c = Koneksi.getKoneksi();
-            String sql ="DELETE FROM tblpetugas WHERE id=?";
+            String sql ="DELETE FROM tblpetugas WHERE idpetugas=?";
             
             PreparedStatement p = c.prepareStatement(sql);
             p.setString(1, id);
@@ -517,6 +521,26 @@ private void kosong(){
         kosong();
         }
     }//GEN-LAST:event_DeleteActionPerformed
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        // TODO add your handling code here:
+         int baris = table.getSelectedRow();
+       
+        if(baris == -1){
+            // tak ada baris terseleksi
+            return;
+        }
+        String IDPetugas = table.getValueAt(baris, 0).toString();
+        id.setText(IDPetugas);
+        String NamaPetugas = table.getValueAt(baris, 1).toString();
+        nama.setText(NamaPetugas);
+        String Alamat = table.getValueAt(baris, 2).toString();
+        alamat.setText(Alamat);
+        String Email = table.getValueAt(baris, 3).toString();
+        email.setText(Email);
+        String Telpon = table.getValueAt(baris, 4).toString();
+        telpon.setText(Telpon);
+    }//GEN-LAST:event_tableMouseClicked
 
     /**
      * @param args the command line arguments

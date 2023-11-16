@@ -95,7 +95,7 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel1.setBackground(new java.awt.Color(225, 225, 192));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
@@ -195,6 +195,11 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        Table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(Table);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 500, 140));
@@ -224,12 +229,27 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
         jPanel1.add(Update, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 520, -1, -1));
 
         Delete.setText("Delete");
+        Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteActionPerformed(evt);
+            }
+        });
         jPanel1.add(Delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 520, -1, -1));
 
         Cancel.setText("Cancel");
+        Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelActionPerformed(evt);
+            }
+        });
         jPanel1.add(Cancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 520, -1, -1));
 
         Close.setText("Close");
+        Close.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CloseActionPerformed(evt);
+            }
+        });
         jPanel1.add(Close, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 520, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -310,9 +330,9 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
         String Telponn = Telpon.getText();
         
         
-        if ("".equals(IDDistributor) || "".equals(NamaDistributor) ||
-                "".equals(AlamatDistributor) ||
-                "".equals(KotaAsal) || "".equals(Email)|| "".equals(Telpon))
+        if ("".equals(ID) || "".equals(Nama) ||
+                "".equals(Alamat) ||
+                "".equals(Kota) || "".equals(Emaill)|| "".equals(Telponn))
         {
             JOptionPane.showMessageDialog(this,
                     "Harap Lengkapi Data",
@@ -364,7 +384,8 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String IDDistributor = (String) model.getValueAt(i,0);
+        
+        String ID = IDDistributor.getText();
         String Nama = NamaDistributor.getText();
         String Alamat = AlamatDistributor.getText();
         String Kota = KotaAsal.getText();
@@ -374,7 +395,7 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
         try{
             Connection c = Koneksi.getKoneksi();
             
-            String sql = "UPDATE tbldistributor SET NAMA = ?, ALAMAT = ?, KOTA_ASAL = ?, EMAIL = ?, TELPON = ? WHERE ID = ?";
+            String sql = "UPDATE tbldistributor SET NamaDistributor = ?, Alamat = ?, Kotasal = ?, Email = ?, Telpon = ? WHERE IDDistributor = ?";
             
             PreparedStatement p = c.prepareStatement(sql);
             
@@ -383,6 +404,7 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
             p.setString(3, Kota);
             p.setString(4, Emaill);
             p.setString(5, Telponn);
+            p.setString(6, ID);
             
             p.executeUpdate();
             p.close();
@@ -395,6 +417,72 @@ public class Form_Distributor_barang extends javax.swing.JFrame {
             kosong();
         }
     }//GEN-LAST:event_UpdateActionPerformed
+
+    private void TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableMouseClicked
+        // TODO add your handling code here:
+        int baris = Table.getSelectedRow();
+        
+        if(baris == -1){
+            return;
+        }
+        
+        String ID = Table.getValueAt(baris, 0).toString();
+        IDDistributor.setText(ID);
+        String Nama = Table.getValueAt(baris, 1).toString();
+        NamaDistributor.setText(Nama);
+        String Alamat = Table.getValueAt(baris, 2).toString();
+        AlamatDistributor.setText(Alamat);
+        String Kota = Table.getValueAt(baris, 3).toString();
+        KotaAsal.setText(Kota);
+        String Emaill = Table.getValueAt(baris, 4).toString();
+        Email.setText(Emaill);
+        String Telponn  = Table.getValueAt(baris, 5).toString();
+        Telpon.setText(Telponn);
+    }//GEN-LAST:event_TableMouseClicked
+
+    private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
+        // TODO add your handling code here:
+        int i = Table.getSelectedRow();
+        
+        if (i == -1){
+            //tidak ada baris terseleksi
+            JOptionPane.showMessageDialog(this, "Harap Pilih Terlebih Dahulu", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String ID = (String)model.getValueAt(i,0);
+        
+        try{
+            Connection c = Koneksi.getKoneksi();
+            
+            String sql = "DELETE FROM tbldistributor WHERE IDDistributor = ?";
+            
+            PreparedStatement p = c.prepareStatement(sql);
+            p.setString(1, ID);
+            p.executeUpdate();
+            p.close();
+            
+            JOptionPane.showMessageDialog(null,"Hapus Data Berhasil");
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(null, "Terjadi Error");
+        }finally{
+            loadData();
+            kosong();
+        }
+
+    }//GEN-LAST:event_DeleteActionPerformed
+
+    private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
+        // TODO add your handling code here:
+        kosong(); 
+        setEnabletrue(); 
+        
+    }//GEN-LAST:event_CancelActionPerformed
+
+    private void CloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseActionPerformed
+        // TODO add your handling code here:
+        if(JOptionPane.showConfirmDialog(null,"This application will be close \n if you press button OK","Information", JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE)==JOptionPane.OK_OPTION) 
+        this.dispose();
+    }//GEN-LAST:event_CloseActionPerformed
 
     /**
      * @param args the command line arguments
